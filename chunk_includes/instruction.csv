@@ -1,0 +1,8 @@
+insPage,text,exImg
+instruction_1.html,"Press ""Understood"" if you've understood the instruction.",example.jpg
+instruction_2.html,"Press ""Understood"" if you've understood the instruction.",instructionA.jpg
+instruction_3.html,"Press ""Understood"" if you've understood the instruction.",instructionB.jpg
+instruction_4.html,"Press ""Understood"" if you've understood the instruction.",instructionC.jpg
+instruction_5.html,Put in your description here,instructionD.jpg
+instruction_6.html,Put in your description here,instructionD.jpg
+instruction_7.html,"Press ""Understood"" if you've understood the instruction.",placeholder.png
