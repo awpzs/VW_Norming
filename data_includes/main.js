@@ -1,9 +1,9 @@
 PennController.ResetPrefix(null) // Shorten command names (keep this line here)
 //PennController.DebugOff()
 
-//PennController.AddHost("https://raw.githubusercontent.com/awpzs/VerbalComm/master/images/")
+PennController.AddHost("https://raw.githubusercontent.com/awpzs/VW_Norming/master/images/")
 
-Sequence( "information", "identification", "instruction", "practice_start", "practice", "practice_end", "experiment", "send", "final" )
+Sequence( "information", "identification", "instruction", "instruction_5", "instruction_6", "practice_start", "practice", "practice_end", "experiment", "send", "final" )
 
 newTrial( "information" ,
     newHtml("information", "information.html")
@@ -15,12 +15,13 @@ newTrial( "information" ,
         .wait()
 )
 
-newTrial( "indentification" ,
+newTrial( "identification" ,
     newText("<p>Please provide your ID before proceeding to the instructions.</p>")
+        .print()
     ,
     newTextInput("inputID", "Your ID")
         .settings.center()
-        .log()
+        .log("final")
         .print()
     ,
     newButton("Agree")
@@ -45,11 +46,7 @@ Template(
             .settings.center()
             .print()
         ,
-        newTextInput("Response", variable.text)
-            .log("final")
-        ,
-        newButton("Understood")
-            .before( getTextInput("Response") )
+        newButton("Proceed")
             .settings.center()
             .print()
             .wait()
@@ -57,10 +54,42 @@ Template(
   .log( "ID"     , getVar("ID")    )
 )
 
-newTrial( "practice_start" ,
-    newText("<p>Let's start with some practice trials. Please describe the object in the box below the pictures. Once finished, please press ENTER or click on Continue to proceed.</p>")
+newTrial( "instruction_5" ,
+    newHtml("information", "instruction_5.html")
+        .print()
     ,
-    newButton("Start")
+    newImage("example", "instructionD.jpg")
+        .settings.center()
+        .print()
+    ,
+    newTextInput("Response", "Put your description here")
+        .settings.center()
+        .log("final")
+        .print()
+    ,
+    newButton("Proceed")
+        .settings.center()
+        .print()
+        .wait()
+)
+.log( "ID"     , getVar("ID")    )
+
+newTrial( "instruction_6" ,
+    newHtml("information", "instruction_6.html")
+        .print()
+    ,
+    newButton("Proceed")
+        .settings.center()
+        .print()
+        .wait()
+)
+.log( "ID"     , getVar("ID")    )   
+
+newTrial( "practice_start" ,
+    newText("<p>Let's start with some practice trials. </p><p>Please describe the object in the box below the pictures. Once finished, please click on <strong>Continue</strong> to proceed.</p>")
+        .print()
+    ,
+    newButton("Continue")
         .settings.center()
         .print()
         .wait()
@@ -71,7 +100,6 @@ Template(
     GetTable("pracdesign.csv")
             .setGroupColumn("list") , variable =>
     newTrial( "practice" ,
-        ,
         newImage("img", variable.$Image)
             .size(800, 512)
             .settings.center()
@@ -79,15 +107,12 @@ Template(
         ,
         newTextInput("Response", "")
             .log("final")
-        ,
-        newButton("continue", "Continue")
-            .before( getTextInput("Response") )
             .settings.center()
             .print()
         ,
-        newSelector("proceed")
-            .add( getButton("continue") )
-            .keys( "Enter" )
+        newButton("continue", "Continue")
+            .settings.center()
+            .print()
             .wait()
   )
   .log( "ID"     , getVar("ID")    )
@@ -95,12 +120,14 @@ Template(
   .log( "Identifier"   , variable.$identifier   )
   .log( "Exp"   , variable.$exp   )
   .log( "Item"   , variable.$item   )
+  .log( "Target", variable.$targetImg)
   .log( "Condition"   , variable.$condition   )
   .log( "Rational"   , variable.$rational   )
 )
 
 newTrial( "practice_end" ,
-    newText("<p>We now start the experiment. Please take a break about the halfway through (as indicated by “progress”).</p>")
+    newText("<p>We will now start the experiment. Please take a break about the halfway through (as indicated by the progress bar above).</p>")
+        .print()
     ,
     newButton("Start")
         .settings.center()
@@ -113,7 +140,6 @@ Template(
     GetTable("fulldesign.csv")
             .setGroupColumn("list") , variable =>
     newTrial( "experiment" ,
-        ,
         newImage("img", variable.$Image)
             .size(800, 512)
             .settings.center()
@@ -121,15 +147,12 @@ Template(
         ,
         newTextInput("Response", "")
             .log("final")
-        ,
-        newButton("continue", "Continue")
-            .before( getTextInput("Response") )
             .settings.center()
             .print()
         ,
-        newSelector("proceed")
-            .add( getButton("continue") )
-            .keys( "Enter" )
+        newButton("continue", "Continue")
+            .settings.center()
+            .print()
             .wait()
   )
   .log( "ID"     , getVar("ID")    )
@@ -137,6 +160,7 @@ Template(
   .log( "Identifier"   , variable.$identifier   )
   .log( "Exp"   , variable.$exp   )
   .log( "Item"   , variable.$item   )
+  .log( "Target", variable.$targetImg)
   .log( "Condition"   , variable.$condition   )
   .log( "Rational"   , variable.$rational   )
 )
@@ -147,7 +171,8 @@ newTrial( "final" ,
     newText("<p>Thank you very much for your participation!</p>")
         .print()
     ,
-    newText("<p><a href='https://stir.ac.uk' href='_blank'>Click here to end the experiment</a></p>")
+    newText("<p><a href='https://stir.ac.uk' href='_blank'>Click here to finish the experiment</a></p>")
+        .settings.center()
         .print()
     ,
     newButton("void")
